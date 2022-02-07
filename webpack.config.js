@@ -1,11 +1,26 @@
 module.exports = {
-  webpack: (config, { isServer }) => {
-    // Fixes npm packages that depend on `fs` module
-    if (!isServer) {
-      config.node = {
-        fs: "empty",
-      };
-    }
-    return config;
+  entry: "./server.js",
+  output: {
+    filename: "compiled.js",
+  },
+  node: {
+    fs: "empty",
+    net: "empty",
+  },
+  resolve: {
+    extensions: [".js", ".jsx"],
+    fallback: {
+      fs: false,
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+    ],
   },
 };
