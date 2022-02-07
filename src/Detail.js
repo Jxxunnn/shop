@@ -15,24 +15,39 @@ let 제목 = styled.h1`
 `;
 
 function Detail(props) {
-  useEffect(() => {
-    console.log(1111);
-  });
+  let [알러트, 알러트변경] = useState(true);
+  let [입력값, 입력값변경] = useState("");
+
   let { id } = useParams();
   let history = useHistory();
   let 찾은상품 = props.shoes.find(function (상품) {
     return 상품.id == id;
   });
 
+  useEffect(() => {
+    let 타이머 = setTimeout(() => {
+      알러트변경(false);
+    }, 2000);
+    return () => {
+      clearTimeout(타이머);
+    };
+  }, []);
   return (
     <div className="container">
       <박스>
-        <제목 className="red">안녕</제목>
+        <제목 className="red">Detail</제목>
       </박스>
-      <div className="my-alert1">
-        <p>재고가 얼마 남지 않았습니다!!</p>
-      </div>
 
+      <input
+        onChange={function (e) {
+          입력값변경(e.target.value);
+        }}
+      />
+      {알러트 == true ? (
+        <div className="my-alert1">
+          <p>재고가 얼마 남지 않았습니다!!</p>
+        </div>
+      ) : null}
       <div className="row">
         <div className="col-md-6">
           <img

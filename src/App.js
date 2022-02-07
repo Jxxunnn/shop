@@ -4,11 +4,16 @@ import "./App.css";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Data from "./data.js";
 import Detail from "./Detail.js";
+import axios from "axios";
 
 import { Link, Route, Switch } from "react-router-dom";
+import { NULL } from "node-sass";
 
 function App() {
   let [shoes, shoes변경] = useState(Data);
+  let [더보기, 더보기변경] = useState([]);
+  let [더보기플래그, 더보기플래그변경] = useState(false);
+
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -56,6 +61,23 @@ function App() {
                 return <Card shoes={shoes[i]} i={i} key={i} />;
               })}
             </div>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                axios
+                  .get("https://codingapple1.github.io/shop/data2.json")
+                  .then((result) => {
+                    더보기변경(result.data);
+                    더보기플래그변경(!더보기플래그);
+                  })
+                  .catch(() => {
+                    console.log("실패했어요");
+                  });
+              }}
+            >
+              더보기
+            </button>
+            {더보기플래그 == true ? <h1>하이</h1> : null}
           </div>
         </Route>
       </Switch>
